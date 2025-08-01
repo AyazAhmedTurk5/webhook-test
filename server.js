@@ -13,7 +13,18 @@ const PORT = process.env.PORT || 3000;
 let webhookHistory = [];
 
 // Middleware
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
+    },
+  })
+);
 app.use(cors());
 app.use(morgan("combined"));
 app.use(bodyParser.json({ limit: "10mb" }));
